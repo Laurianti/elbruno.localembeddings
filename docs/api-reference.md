@@ -5,8 +5,15 @@
 | Package | Description |
 |---------|-------------|
 | `ElBruno.LocalEmbeddings` | Core library — local ONNX embedding generation with M.E.AI |
+| `ElBruno.LocalEmbeddings.EmbeddingGemma` | Companion package — local text embeddings with Google EmbeddingGemma 2 |
 | `ElBruno.LocalEmbeddings.KernelMemory` | Companion package — Kernel Memory `ITextEmbeddingGenerator` adapter + builder/DI extensions |
 | `ElBruno.LocalEmbeddings.VectorData` | Companion package — DI helpers for `Microsoft.Extensions.VectorData` (`VectorStore` + typed collections) |
+
+## EmbeddingGemma 2 companion package
+
+`ElBruno.LocalEmbeddings.EmbeddingGemma` provides text-only local embeddings through the same M.E.AI abstraction. It exposes `EmbeddingGemmaEmbeddingGenerator.CreateAsync(EmbeddingGemmaOptions)`, supports 128-, 256-, 512-, and 768-dimensional output, and provides `EmbeddingGemmaPrompts.CreateSearchQuery` / `CreateDocument` for Google's retrieval prompts. Image, audio, and video model inputs are not currently supported.
+
+See the [EmbeddingGemma integration guide](embeddinggemma-integration.md) for configuration and examples.
 
 ## LocalEmbeddingGenerator
 
@@ -414,4 +421,3 @@ public static class ServiceCollectionExtensions
 - 🎥 **[YouTube Channel](https://www.youtube.com/elbruno)** — Live demos and tutorials
 - 🎙️ **[No Tienen Nombre Podcast](https://notienenombre.com)** — Conversations about AI and .NET (Spanish)
 ```
-

@@ -11,6 +11,7 @@
     <Project Path="src/ElBruno.LocalEmbeddings.Azure/ElBruno.LocalEmbeddings.Azure.csproj" />
     <Project Path="src/ElBruno.LocalEmbeddings.OpenTelemetry/ElBruno.LocalEmbeddings.OpenTelemetry.csproj" />
     <Project Path="src/ElBruno.LocalEmbeddings.Harrier/ElBruno.LocalEmbeddings.Harrier.csproj" />
+    <Project Path="src/ElBruno.LocalEmbeddings.EmbeddingGemma/ElBruno.LocalEmbeddings.EmbeddingGemma.csproj" />
     <Project Path="src/ElBruno.LocalEmbeddings.BlazorComponents/ElBruno.LocalEmbeddings.BlazorComponents.csproj" />
     <Project Path="src/ElBruno.LocalEmbeddings.Benchmarks/ElBruno.LocalEmbeddings.Benchmarks.csproj" />
   </Folder>
@@ -26,6 +27,7 @@
     <Project Path="tests/ElBruno.LocalEmbeddings.OpenTelemetry.Tests/ElBruno.LocalEmbeddings.OpenTelemetry.Tests.csproj" />
     <Project Path="tests/ElBruno.LocalEmbeddings.BlazorComponents.Tests/ElBruno.LocalEmbeddings.BlazorComponents.Tests.csproj" />
     <Project Path="src/Tests/ElBruno.LocalEmbeddings.Harrier.Tests/ElBruno.LocalEmbeddings.Harrier.Tests.csproj" />
+    <Project Path="src/Tests/ElBruno.LocalEmbeddings.EmbeddingGemma.Tests/ElBruno.LocalEmbeddings.EmbeddingGemma.Tests.csproj" />
     <Project Path="src/Tests/ElBruno.LocalEmbeddings.SharedModelTests/ElBruno.LocalEmbeddings.SharedModelTests.csproj" />
   </Folder>
   <Folder Name="/samples/">
@@ -40,6 +42,7 @@
     <Project Path="src/Samples/RaspberryPiTiny/RaspberryPiTiny.csproj" />
     <Project Path="src/Samples/RagChat/RagChat.csproj" />
     <Project Path="src/Samples/DocumentRagFoundry/DocumentRagFoundry.csproj" />
+    <Project Path="src/Samples/EmbeddingGemmaConsoleApp/EmbeddingGemmaConsoleApp.csproj" />
     <Project Path="src/Samples/RagFoundryLocal/RagFoundryLocal.csproj" />
     <Project Path="src/Samples/RagOllama/RagOllama.csproj" />
     <Project Path="src/Samples/LocalLlmRag/LocalLlmRag.csproj" />

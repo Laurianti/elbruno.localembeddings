@@ -45,6 +45,8 @@ var options = new LocalEmbeddingsOptions
 
 For non-default model walkthroughs (including local download + license notes), see [Alternative Models](alternative-models.md).
 
+Google EmbeddingGemma 2 uses a dedicated companion package rather than the core `ModelName` option, because its SentencePiece tokenizer and ONNX graph have a different inference contract. See the [EmbeddingGemma integration guide](embeddinggemma-integration.md) for installation, task prompts, output dimensions, and local/offline configuration.
+
 Common alternatives with model cards:
 
 Estimated download sizes are approximate and can vary by ONNX variant and tokenizer assets.

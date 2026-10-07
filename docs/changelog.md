@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.6.4] - 2026-10-07
+
+### Added
+
+- `ElBruno.LocalEmbeddings.EmbeddingGemma` companion package for local, text-only Google EmbeddingGemma 2 inference through `IEmbeddingGenerator<string, Embedding<float>>`.
+- Revision-pinned Q4 ONNX and SentencePiece downloads with SHA-256 verification, query/document prompt helpers, configurable 128/256/512/768 output dimensions, and an executable semantic-search sample.
+- EmbeddingGemma integration documentation, unit and opt-in model tests, and NuGet publishing workflow support.
+
 ## [Unreleased] - 2026-02-28
 
 ### Added
@@ -61,4 +69,3 @@ All notable changes to this project are documented in this file.
 - Updated docs (`README`, getting started, configuration, API reference, DI, Kernel Memory integration) to reflect async-first initialization and search-only Kernel Memory usage.
 - Migrated `src/src/Samples/RagChat` from a sample-local vector store implementation to shared `ElBruno.LocalEmbeddings.VectorData.InMemory` via `AddLocalEmbeddingsWithInMemoryVectorStore(...)`.
 - Removed duplicate sample-only in-memory vector store code from `src/src/Samples/RagChat/VectorStore` and aligned docs to position RagChat as the in-memory VectorData reference sample.
-

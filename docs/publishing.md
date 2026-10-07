@@ -1,12 +1,13 @@
 # Publishing a New Version to NuGet
 
-This guide covers how to publish new versions of **ElBruno.LocalEmbeddings**, **ElBruno.LocalEmbeddings.ImageEmbeddings**, **ElBruno.LocalEmbeddings.KernelMemory**, and **ElBruno.LocalEmbeddings.VectorData** to NuGet.org using GitHub Actions and NuGet Trusted Publishing (keyless, OIDC-based).
+This guide covers how to publish new versions of **ElBruno.LocalEmbeddings**, **ElBruno.LocalEmbeddings.EmbeddingGemma**, **ElBruno.LocalEmbeddings.ImageEmbeddings**, **ElBruno.LocalEmbeddings.KernelMemory**, and **ElBruno.LocalEmbeddings.VectorData** to NuGet.org using GitHub Actions and NuGet Trusted Publishing (keyless, OIDC-based).
 
 ## Packages
 
 | Package | Project | Description |
 |---------|---------|-------------|
 | `ElBruno.LocalEmbeddings` | `src/ElBruno.LocalEmbeddings/` | Core library — local ONNX embedding generation |
+| `ElBruno.LocalEmbeddings.EmbeddingGemma` | `src/ElBruno.LocalEmbeddings.EmbeddingGemma/` | Companion — local Google EmbeddingGemma 2 text embeddings |
 | `ElBruno.LocalEmbeddings.ImageEmbeddings` | `src/ElBruno.LocalEmbeddings.ImageEmbeddings/` | Companion — CLIP-based image embeddings |
 | `ElBruno.LocalEmbeddings.KernelMemory` | `src/ElBruno.LocalEmbeddings.KernelMemory/` | Companion — Kernel Memory adapter + extensions |
 | `ElBruno.LocalEmbeddings.VectorData` | `src/ElBruno.LocalEmbeddings.VectorData/` | Companion — Microsoft.Extensions.VectorData integration |
@@ -30,14 +31,15 @@ These steps only need to be done once.
 | **Workflow File** | `publish.yml` |
 | **Environment** | `release` |
 
-   You need to create this policy **four times** — once per package:
+   Create a Trusted Publishing policy for each package:
 
 - `ElBruno.LocalEmbeddings`
+- `ElBruno.LocalEmbeddings.EmbeddingGemma`
 - `ElBruno.LocalEmbeddings.ImageEmbeddings`
 - `ElBruno.LocalEmbeddings.KernelMemory`
 - `ElBruno.LocalEmbeddings.VectorData`
 
-   > **Note:** For new packages that don't exist on NuGet.org yet, you must first push them once (the workflow handles this). After the initial push, add the Trusted Publishing policy so future publishes are keyless.
+   > **Important:** Configure the Trusted Publishing policy and its package scope before the first publish. Include `ElBruno.LocalEmbeddings.EmbeddingGemma` and allow creation of new package IDs; the package does not need to exist on NuGet.org to be included in a policy.
 
 ### 2. Configure GitHub Repository
 
@@ -55,9 +57,10 @@ These steps only need to be done once.
 
 This is the standard workflow — the version is derived from the release tag.
 
-1. **Update the version** in all four csproj files:
+1. **Update the version** in each package csproj that will be published:
 
    - `src/ElBruno.LocalEmbeddings/ElBruno.LocalEmbeddings.csproj`
+   - `src/ElBruno.LocalEmbeddings.EmbeddingGemma/ElBruno.LocalEmbeddings.EmbeddingGemma.csproj`
    - `src/ElBruno.LocalEmbeddings.ImageEmbeddings/ElBruno.LocalEmbeddings.ImageEmbeddings.csproj`
    - `src/ElBruno.LocalEmbeddings.KernelMemory/ElBruno.LocalEmbeddings.KernelMemory.csproj`
    - `src/ElBruno.LocalEmbeddings.VectorData/ElBruno.LocalEmbeddings.VectorData.csproj`
@@ -98,7 +101,7 @@ The workflow (`.github/workflows/publish.yml`) uses **NuGet Trusted Publishing**
 GitHub Release created (e.g. v1.2.0)
   → GitHub Actions triggers publish.yml
     → Builds + tests all projects
-   → Packs four .nupkg files (LocalEmbeddings, ImageEmbeddings, KernelMemory, VectorData)
+   → Packs the configured .nupkg files, including EmbeddingGemma
     → Requests an OIDC token from GitHub
     → Exchanges the token with NuGet.org for a temporary API key (valid 1 hour)
     → Pushes all packages to NuGet.org

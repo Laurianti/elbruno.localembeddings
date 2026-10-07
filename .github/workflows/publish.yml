@@ -85,6 +85,7 @@ jobs:
       - name: Pack
         run: |
           dotnet pack src/ElBruno.LocalEmbeddings/ElBruno.LocalEmbeddings.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.version }} -o artifacts
+          dotnet pack src/ElBruno.LocalEmbeddings.EmbeddingGemma/ElBruno.LocalEmbeddings.EmbeddingGemma.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.version }} -o artifacts
           dotnet pack src/ElBruno.LocalEmbeddings.Harrier/ElBruno.LocalEmbeddings.Harrier.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.version }} -o artifacts
           dotnet pack src/ElBruno.LocalEmbeddings.ImageEmbeddings/ElBruno.LocalEmbeddings.ImageEmbeddings.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.version }} -o artifacts
           dotnet pack src/ElBruno.LocalEmbeddings.ImageEmbeddings.Downloader/ElBruno.LocalEmbeddings.ImageEmbeddings.Downloader.csproj -c Release --no-build -p:Version=${{ steps.version.outputs.version }} -o artifacts

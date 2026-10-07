@@ -1,6 +1,6 @@
 # Samples — ElBruno.LocalEmbeddings
 
-Sixteen sample projects demonstrating LocalEmbeddings from basic usage to full RAG with a local LLM, including multilingual support with Harrier and image-based retrieval with CLIP.
+Sample projects demonstrating LocalEmbeddings from basic usage to full RAG with a local LLM, including multilingual support with Harrier and EmbeddingGemma, plus image-based retrieval with CLIP.
 
 ## Overview
 
@@ -11,6 +11,7 @@ Sixteen sample projects demonstrating LocalEmbeddings from basic usage to full R
 | [ConsoleAppLite](#consoleapplite) | Lightweight menu sample for low-resource devices | No |
 | [ConsoleApp](#consoleapp) | Embedding basics: generation, similarity, search, DI | No |
 | [HarrierConsoleApp](#harrierconsoleapp) | Harrier model: basic usage, batching, similarity, token counting | No |
+| [EmbeddingGemmaConsoleApp](#embeddinggemmaconsoleapp) | EmbeddingGemma 2: task-aware text embeddings and semantic search | No |
 | [BenchmarkSample](#benchmarksample) | BenchmarkDotNet performance suite with cross-platform baselines | No |
 | [RagChat](#ragchat) | Semantic search Q&A over an in-memory FAQ dataset | No |
 | [RagOllama](#ragollama) | Full RAG chat using Ollama with phi4-mini + Kernel Memory | Yes (Ollama) |
@@ -150,6 +151,25 @@ Walks through 6 progressive examples:
 ```bash
 dotnet run --project samples/HarrierConsoleApp
 ```
+
+---
+
+## EmbeddingGemmaConsoleApp
+
+Demonstrates Google's **EmbeddingGemma 2** text-only integration with a retrieval query and titled document prompts, batched inference, configurable vector dimensions, and cosine-similarity ranking.
+
+### Prerequisites
+
+- .NET 10 SDK
+- Internet access on first run to download the pinned ONNX model and tokenizer (~171 MiB total)
+
+### Run
+
+```bash
+dotnet run --project src/Samples/EmbeddingGemmaConsoleApp
+```
+
+See the [sample README](EmbeddingGemmaConsoleApp/README.md) and [integration guide](../../docs/embeddinggemma-integration.md) for details.
 
 ---
 
