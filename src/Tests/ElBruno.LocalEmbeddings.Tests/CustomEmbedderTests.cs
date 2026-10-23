@@ -106,10 +106,14 @@ public class CustomEmbedderTests
         public int DimensionSize => 768;
         public IReadOnlyList<string> Capabilities => Array.Empty<string>();
 
+        // Completed when a call starts its delay.
+        public TaskCompletionSource DelayStarted { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
         public async Task<float[]> EmbedAsync(string text, CancellationToken cancellationToken = default)
         {
-            if (_delayMs > 0)
+            if (_delayMs != 0)
             {
+                DelayStarted.TrySetResult();
                 await Task.Delay(_delayMs, cancellationToken);
             }
 
@@ -123,8 +127,9 @@ public class CustomEmbedderTests
 
         public async Task<IEnumerable<float[]>> EmbedBatchAsync(IEnumerable<string> texts, CancellationToken cancellationToken = default)
         {
-            if (_delayMs > 0)
+            if (_delayMs != 0)
             {
+                DelayStarted.TrySetResult();
                 await Task.Delay(_delayMs, cancellationToken);
             }
 
@@ -431,13 +436,18 @@ public class CustomEmbedderTests
     [Fact]
     public async Task GenerateAsync_CancellationDuringExecution_ThrowsOperationCanceledException()
     {
-        var embedder = new ErrorProneEmbedder(delayMs: 5000);
+        // The delay ends only with the cancellation, and the test cancels once the embedder waits, so no timer decides the result.
+        // The outer timeouts make the test fail instead of hanging if the cancellation never reached the embedder.
+        var embedder = new ErrorProneEmbedder(delayMs: Timeout.Infinite);
         var generator = CustomEmbedder.CreateAdapter(embedder);
-        using var cts = new CancellationTokenSource(100);
+        using var cts = new CancellationTokenSource();
+
+        var generateTask = generator.GenerateAsync("test", cancellationToken: cts.Token);
+        await embedder.DelayStarted.Task.WaitAsync(TimeSpan.FromSeconds(60));
+        cts.Cancel();
 
         // TaskCanceledException is a subclass of OperationCanceledException
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
-            generator.GenerateAsync("test", cancellationToken: cts.Token));
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => generateTask.WaitAsync(TimeSpan.FromSeconds(60)));
     }
 
     #endregion
