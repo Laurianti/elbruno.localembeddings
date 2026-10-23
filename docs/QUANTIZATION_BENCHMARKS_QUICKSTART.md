@@ -63,7 +63,7 @@ var similarity = benchmarks.GetAccuracyMetric();
 
 **On Windows:**
 ```
-C:\Users\{YourUsername}\AppData\Local\LocalEmbeddings\models\
+C:\Users\{YourUsername}\AppData\Local\ElBruno\LocalEmbeddings\models\
   └── sentence-transformers_all-MiniLM-L6-v2\
       ├── model.onnx              (100 MB, full-precision)
       ├── model_int8.onnx         (26 MB, quantized) ← Key file
@@ -71,9 +71,9 @@ C:\Users\{YourUsername}\AppData\Local\LocalEmbeddings\models\
       └── ...
 ```
 
-**On Linux/macOS:**
+**On Linux** (on macOS, `~/Library/Application Support/ElBruno/LocalEmbeddings/models/`)**:**
 ```
-~/.local/share/LocalEmbeddings/models/
+~/.local/share/ElBruno/LocalEmbeddings/models/
   └── sentence-transformers_all-MiniLM-L6-v2/
       ├── model.onnx
       ├── model_int8.onnx

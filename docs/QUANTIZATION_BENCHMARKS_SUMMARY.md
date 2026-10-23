@@ -72,8 +72,8 @@ Covers:
 ### Prerequisites
 
 1. **Models cached locally** at:
-   - Windows: `%LOCALAPPDATA%\LocalEmbeddings\models\sentence-transformers_all-MiniLM-L6-v2\`
-   - Linux: `~/.local/share/LocalEmbeddings/models/sentence-transformers_all-MiniLM-L6-v2/`
+   - Windows: `%LOCALAPPDATA%\ElBruno\LocalEmbeddings\models\sentence-transformers_all-MiniLM-L6-v2\`
+   - Linux: `~/.local/share/ElBruno/LocalEmbeddings/models/sentence-transformers_all-MiniLM-L6-v2/`
 
 2. **Both model files present:**
    - `model.onnx` (full-precision, ~100 MB)

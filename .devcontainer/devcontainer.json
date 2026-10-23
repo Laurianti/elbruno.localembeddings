@@ -11,7 +11,7 @@
   },
   "mounts": [
     "source=elbruno-localembeddings-nuget,target=/home/vscode/.nuget/packages,type=volume",
-    "source=elbruno-localembeddings-models,target=/home/vscode/.local/share/LocalEmbeddings/models,type=volume"
+    "source=elbruno-localembeddings-models,target=/home/vscode/.local/share/ElBruno/LocalEmbeddings/models,type=volume"
   ],
   "customizations": {
     "vscode": {

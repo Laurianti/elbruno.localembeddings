@@ -92,9 +92,9 @@ Need guidance on choosing models for your use case? See [Alternative Models](alt
 
 ## Cache Locations
 
-- **Windows**: `%LOCALAPPDATA%\LocalEmbeddings\models`
-- **Linux**: `$XDG_DATA_HOME/LocalEmbeddings/models` or `~/.local/share/LocalEmbeddings/models`
-- **macOS**: `~/.local/share/LocalEmbeddings/models`
+- **Windows**: `%LOCALAPPDATA%\ElBruno\LocalEmbeddings\models`
+- **Linux**: `$XDG_DATA_HOME/ElBruno/LocalEmbeddings/models` or `~/.local/share/ElBruno/LocalEmbeddings/models`
+- **macOS**: `~/Library/Application Support/ElBruno/LocalEmbeddings/models`
 
 Override with `CacheDirectory`:
 

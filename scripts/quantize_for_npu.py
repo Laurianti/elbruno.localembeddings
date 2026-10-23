@@ -183,14 +183,20 @@ def main():
         model_path = args.model_path
         output_path = args.output_path or model_path.replace(".onnx", "_int8_static.onnx")
     else:
-        # Default: use cached model directory
+        # Default: use cached model directory, where LocalApplicationData of .NET points
+        xdg_data_home = os.environ.get("XDG_DATA_HOME", "")
+        if sys.platform == "darwin":
+            data_dir = os.path.expanduser("~/Library/Application Support")
+        elif os.path.isabs(xdg_data_home):
+            data_dir = xdg_data_home
+        else:
+            data_dir = os.path.expanduser("~/.local/share")
         cache_dir = os.path.join(
-            os.environ.get("LOCALAPPDATA", os.path.expanduser("~/.local/share")),
+            os.environ.get("LOCALAPPDATA", data_dir),
             "ElBruno",
             "LocalEmbeddings",
             "models",
-            "sentence-transformers",
-            "all-MiniLM-L6-v2",
+            "sentence-transformers_all-MiniLM-L6-v2",
         )
         model_path = os.path.join(cache_dir, "model.onnx")
         output_path = os.path.join(cache_dir, "model_int8_static.onnx")
