@@ -88,11 +88,14 @@ public class HuggingFaceImageModelDownloader : IImageModelDownloader
                 }
             }
 
+            // The ONNX files are moved to the output directory root after the download: the ones already there are not requested again.
             await _downloader.DownloadFilesAsync(new DownloadRequest
             {
                 RepoId = DefaultRepoId,
                 LocalDirectory = outputDirectory,
                 RequiredFiles = RequiredFiles
+                    .Where(f => !f.StartsWith("onnx/", StringComparison.Ordinal) || !File.Exists(Path.Combine(outputDirectory, Path.GetFileName(f))))
+                    .ToList()
             }, cancellationToken).ConfigureAwait(false);
 
             // The downloader preserves subdirectory structure (e.g., onnx/text_model.onnx).
@@ -129,9 +132,10 @@ public class HuggingFaceImageModelDownloader : IImageModelDownloader
         }
     }
 
-    // True when the downloader has nothing to download and the ONNX files have a sidecar hash that matches them.
+    // True when the ONNX files are in the output directory with a sidecar hash that matches them, and the other required files are there.
+    // The ONNX files are not looked for in onnx/: they are moved from there after the download.
     private static bool IsComplete(string outputDirectory)
-        => RequiredFiles.All(f => File.Exists(Path.Combine(outputDirectory, f.Replace('/', Path.DirectorySeparatorChar))))
+        => RequiredFiles.Where(f => !f.StartsWith("onnx/", StringComparison.Ordinal)).All(f => File.Exists(Path.Combine(outputDirectory, f)))
             && OnnxModelFileNames.All(f => File.Exists(Path.Combine(outputDirectory, f))
                 && File.Exists(Path.Combine(outputDirectory, f + ".sha256"))
                 && SidecarHashValid(Path.Combine(outputDirectory, f)));

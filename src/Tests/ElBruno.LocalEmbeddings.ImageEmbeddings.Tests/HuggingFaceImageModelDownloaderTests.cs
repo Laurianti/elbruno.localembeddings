@@ -246,4 +246,95 @@ public class HuggingFaceImageModelDownloaderTests
             }
         }
     }
+
+    [Fact]
+    public async Task EnsureModelDownloadedAsync_SecondCall_DoesNotDownloadTheModelAgain()
+    {
+        var modelDir = Path.Combine(Path.GetTempPath(), $"ImageEmbeddingsTest_{Guid.NewGuid()}");
+
+        try
+        {
+            var gets = 0;
+            var mockHandler = new Mock<HttpMessageHandler>();
+            mockHandler
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync((HttpRequestMessage req, CancellationToken _) =>
+                {
+                    if (req.Method == HttpMethod.Get)
+                    {
+                        Interlocked.Increment(ref gets);
+                    }
+
+                    return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("fake model") };
+                });
+
+            var downloader = new HuggingFaceImageModelDownloader(new HttpClient(mockHandler.Object));
+            await downloader.EnsureModelDownloadedAsync(modelDir);
+            var getsAfterFirstCall = gets;
+
+            await downloader.EnsureModelDownloadedAsync(modelDir);
+
+            Assert.Equal(4, getsAfterFirstCall);
+            Assert.Equal(getsAfterFirstCall, gets);
+            Assert.False(File.Exists(Path.Combine(modelDir, "onnx", "text_model.onnx")), "The ONNX files should not be downloaded again into onnx/");
+            Assert.False(File.Exists(Path.Combine(modelDir, "onnx", "vision_model.onnx")), "The ONNX files should not be downloaded again into onnx/");
+        }
+        finally
+        {
+            if (Directory.Exists(modelDir))
+            {
+                Directory.Delete(modelDir, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task EnsureModelDownloadedAsync_WhenAFileIsMissing_DownloadsOnlyThatFile()
+    {
+        var modelDir = Path.Combine(Path.GetTempPath(), $"ImageEmbeddingsTest_{Guid.NewGuid()}");
+
+        try
+        {
+            var gets = new System.Collections.Concurrent.ConcurrentQueue<string>();
+            var mockHandler = new Mock<HttpMessageHandler>();
+            mockHandler
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync((HttpRequestMessage req, CancellationToken _) =>
+                {
+                    if (req.Method == HttpMethod.Get)
+                    {
+                        gets.Enqueue(req.RequestUri!.AbsolutePath);
+                    }
+
+                    return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("fake model") };
+                });
+
+            var downloader = new HuggingFaceImageModelDownloader(new HttpClient(mockHandler.Object));
+            await downloader.EnsureModelDownloadedAsync(modelDir);
+            File.Delete(Path.Combine(modelDir, "merges.txt"));
+            gets.Clear();
+
+            await downloader.EnsureModelDownloadedAsync(modelDir);
+
+            Assert.Single(gets);
+            Assert.EndsWith("/merges.txt", gets.Single(), StringComparison.Ordinal);
+            Assert.True(File.Exists(Path.Combine(modelDir, "merges.txt")));
+            Assert.False(File.Exists(Path.Combine(modelDir, "onnx", "text_model.onnx")), "The ONNX files should not be downloaded again into onnx/");
+        }
+        finally
+        {
+            if (Directory.Exists(modelDir))
+            {
+                Directory.Delete(modelDir, recursive: true);
+            }
+        }
+    }
 }
