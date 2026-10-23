@@ -10,9 +10,17 @@ internal static class BenchmarkHelpers
     /// </summary>
     internal static string? TryResolveModelDirectory()
     {
-        var cacheDir = ResolveBaseCacheDir();
-        var modelDir = Path.Combine(cacheDir, ModelCacheSubDir);
-        return Directory.Exists(modelDir) ? modelDir : null;
+        // The cache directory of the library first, then the one without ElBruno that the benchmarks used before.
+        foreach (var cacheDir in new[] { ResolveBaseCacheDir(), ResolveLegacyCacheDir() })
+        {
+            var modelDir = Path.Combine(cacheDir, ModelCacheSubDir);
+            if (Directory.Exists(modelDir))
+            {
+                return modelDir;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -31,6 +39,11 @@ internal static class BenchmarkHelpers
     }
 
     private static string ResolveBaseCacheDir() =>
+        Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "ElBruno", "LocalEmbeddings", "models");
+
+    private static string ResolveLegacyCacheDir() =>
         OperatingSystem.IsWindows()
             ? Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),

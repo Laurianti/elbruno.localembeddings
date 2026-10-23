@@ -47,11 +47,9 @@ public class TokenizerBenchmarks
 
     private static string ResolveModelDirectory()
     {
-        var defaultCache = OperatingSystem.IsWindows()
-            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "LocalEmbeddings", "models")
-            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".local", "share", "LocalEmbeddings", "models");
+        var defaultCache = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "ElBruno", "LocalEmbeddings", "models");
 
         var modelDir = Path.Combine(defaultCache, "sentence-transformers_all-MiniLM-L6-v2");
 

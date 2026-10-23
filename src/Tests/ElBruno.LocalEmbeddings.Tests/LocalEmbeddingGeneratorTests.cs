@@ -505,10 +505,17 @@ public class LocalEmbeddingGeneratorTests
         var defaultCache = OperatingSystem.IsWindows()
             ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LocalEmbeddings", "models")
             : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share", "LocalEmbeddings", "models");
+        var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var paths = new[]
+        {
+            Path.Combine(appData, "ElBruno", "LocalEmbeddings", "models", "sentence-transformers_all-MiniLM-L6-v2"),
+            Path.Combine(defaultCache, "sentence-transformers_all-MiniLM-L6-v2"),
+        };
 
-        var modelDir = Path.Combine(defaultCache, "sentence-transformers_all-MiniLM-L6-v2");
+        var modelDir = paths.FirstOrDefault(p =>
+            Directory.Exists(p) && File.Exists(Path.Combine(p, "model.onnx")));
 
-        if (Directory.Exists(modelDir) && File.Exists(Path.Combine(modelDir, "model.onnx")))
+        if (modelDir != null)
             return modelDir;
 
         // Try alternative locations
