@@ -11,6 +11,8 @@
     <PackageReference Include="PdfSharp" Version="6.2.0" />
     <PackageReference Include="SkiaSharp" Version="3.116.1" />
     <PackageReference Include="Spectre.Console" Version="0.49.1" />
+    <!-- PdfSharp brings System.Security.Cryptography.Pkcs 8.0.1, which has known vulnerabilities. -->
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
 
   <PropertyGroup>
